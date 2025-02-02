@@ -33,6 +33,9 @@ public class MainWindow extends javax.swing.JFrame {
         scrollPaneFrequencies = new javax.swing.JScrollPane();
         frequencyTable = new javax.swing.JTable();
         scrollPaneTree = new javax.swing.JScrollPane();
+        headerTable = new javax.swing.JLabel();
+        headerTree = new javax.swing.JLabel();
+        saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +65,19 @@ public class MainWindow extends javax.swing.JFrame {
         ));
         scrollPaneFrequencies.setViewportView(frequencyTable);
 
+        headerTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        headerTable.setText("Frequency Table");
+
+        headerTree.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        headerTree.setText("Huffman Tree");
+
+        saveButton.setText("Save results");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -79,9 +95,20 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(okButton)))
-                        .addGap(18, 18, 18)
-                        .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGap(216, 216, 216)
+                                .addComponent(saveButton)))))
                 .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(MainPanelLayout.createSequentialGroup()
+                .addGap(210, 210, 210)
+                .addComponent(headerTable, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(headerTree, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(189, 189, 189))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,8 +118,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(okButton))
-                .addGap(56, 56, 56)
+                    .addComponent(okButton)
+                    .addComponent(saveButton))
+                .addGap(28, 28, 28)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headerTable)
+                    .addComponent(headerTree))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollPaneTree)
                     .addComponent(scrollPaneFrequencies))
@@ -121,12 +153,19 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_stringInputActionPerformed
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
     private javax.swing.JTable frequencyTable;
     private javax.swing.JLabel headerLabel;
+    private javax.swing.JLabel headerTable;
+    private javax.swing.JLabel headerTree;
     private javax.swing.JButton okButton;
+    private javax.swing.JButton saveButton;
     private javax.swing.JScrollPane scrollPaneFrequencies;
     private javax.swing.JScrollPane scrollPaneTree;
     private javax.swing.JTextField stringInput;
