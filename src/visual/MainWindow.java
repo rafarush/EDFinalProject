@@ -203,6 +203,7 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = numberOfRows-1; i >= 0; i--) {
             tableModel.removeRow(i);
         }
+        System.out.println("Funciona");
         
         // Saves the input string and removes the blank spaces
         String inputText = stringInput.getText();
