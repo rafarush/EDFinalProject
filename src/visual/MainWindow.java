@@ -4,6 +4,7 @@
  */
 package visual;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -186,10 +187,23 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
-        Character letters[] = new Character[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
-        for (int i = 0; i < letters.length; i++) {
-            tableModel.addRow(new Object[]{letters[i], i});
+        // Removes all rows in the table
+        int numberOfRows = tableModel.getRowCount();
+        for (int i = numberOfRows-1; i >= 0; i--) {
+            tableModel.removeRow(i);
         }
+        
+        // Saves the input string and removes the blank spaces
+        String inputText = stringInput.getText().trim().replace(" ", "");
+        if(!inputText.isEmpty()){
+            char letters[] = inputText.toCharArray();
+            for (int i = 0; i < letters.length; i++) {
+                tableModel.addRow(new Object[]{letters[i], i});
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
+        }
+        
     }//GEN-LAST:event_okButtonActionPerformed
 
 
