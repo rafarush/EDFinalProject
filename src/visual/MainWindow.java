@@ -4,17 +4,26 @@
  */
 package visual;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author rgarc
  */
 public class MainWindow extends javax.swing.JFrame {
 
+    private DefaultTableModel tableModel;
+    
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        String columns[] = {"Character","Code"};
+        tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(columns);
+        codeTable.setModel(tableModel);
     }
 
     /**
@@ -31,11 +40,12 @@ public class MainWindow extends javax.swing.JFrame {
         okButton = new javax.swing.JButton();
         headerLabel = new javax.swing.JLabel();
         scrollPaneFrequencies = new javax.swing.JScrollPane();
-        frequencyTable = new javax.swing.JTable();
+        codeTable = new javax.swing.JTable();
         scrollPaneTree = new javax.swing.JScrollPane();
         headerTable = new javax.swing.JLabel();
         headerTree = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
+        encodedString = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,26 +57,45 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         headerLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerLabel.setText("Huffman Coder");
 
-        frequencyTable.setModel(new javax.swing.table.DefaultTableModel(
+        codeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Character", "Frequency"
             }
-        ));
-        scrollPaneFrequencies.setViewportView(frequencyTable);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scrollPaneFrequencies.setViewportView(codeTable);
 
         headerTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerTable.setText("Frequency Table");
+        headerTable.setText("Code Table");
 
         headerTree.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerTree.setText("Huffman Tree");
@@ -75,6 +104,14 @@ public class MainWindow extends javax.swing.JFrame {
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
+            }
+        });
+
+        encodedString.setEditable(false);
+        encodedString.setText("Encoded string...");
+        encodedString.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                encodedStringActionPerformed(evt);
             }
         });
 
@@ -92,16 +129,16 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(scrollPaneFrequencies)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(okButton)))
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(okButton)))
+                        .addGap(18, 18, 18)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addGap(216, 216, 216)
-                                .addComponent(saveButton)))))
+                                .addComponent(encodedString)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(210, 210, 210)
@@ -116,11 +153,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(okButton)
-                    .addComponent(saveButton))
-                .addGap(28, 28, 28)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(okButton)
+                        .addComponent(saveButton)
+                        .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(headerTable)
                     .addComponent(headerTree))
@@ -157,10 +196,36 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+        // Removes all rows in the table
+        int numberOfRows = tableModel.getRowCount();
+        for (int i = numberOfRows-1; i >= 0; i--) {
+            tableModel.removeRow(i);
+        }
+        
+        // Saves the input string and removes the blank spaces
+        String inputText = stringInput.getText();
+        if(!inputText.isEmpty()){
+            char letters[] = inputText.toCharArray();
+            for (int i = 0; i < letters.length; i++) {
+                tableModel.addRow(new Object[]{letters[i], i});
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
+        }
+        
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private void encodedStringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encodedStringActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_encodedStringActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JTable frequencyTable;
+    private javax.swing.JTable codeTable;
+    private javax.swing.JTextField encodedString;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JLabel headerTable;
     private javax.swing.JLabel headerTree;
