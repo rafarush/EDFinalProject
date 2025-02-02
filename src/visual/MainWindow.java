@@ -20,10 +20,10 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String columns[] = {"Character","Frequency"};
+        String columns[] = {"Character","Code"};
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columns);
-        frequencyTable.setModel(tableModel);
+        codeTable.setModel(tableModel);
     }
 
     /**
@@ -40,11 +40,12 @@ public class MainWindow extends javax.swing.JFrame {
         okButton = new javax.swing.JButton();
         headerLabel = new javax.swing.JLabel();
         scrollPaneFrequencies = new javax.swing.JScrollPane();
-        frequencyTable = new javax.swing.JTable();
+        codeTable = new javax.swing.JTable();
         scrollPaneTree = new javax.swing.JScrollPane();
         headerTable = new javax.swing.JLabel();
         headerTree = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
+        encodedString = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,7 +67,7 @@ public class MainWindow extends javax.swing.JFrame {
         headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerLabel.setText("Huffman Coder");
 
-        frequencyTable.setModel(new javax.swing.table.DefaultTableModel(
+        codeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -91,10 +92,10 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        scrollPaneFrequencies.setViewportView(frequencyTable);
+        scrollPaneFrequencies.setViewportView(codeTable);
 
         headerTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerTable.setText("Frequency Table");
+        headerTable.setText("Code Table");
 
         headerTree.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerTree.setText("Huffman Tree");
@@ -103,6 +104,14 @@ public class MainWindow extends javax.swing.JFrame {
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
+            }
+        });
+
+        encodedString.setEditable(false);
+        encodedString.setText("Encoded string...");
+        encodedString.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                encodedStringActionPerformed(evt);
             }
         });
 
@@ -120,16 +129,16 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(scrollPaneFrequencies)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(okButton)))
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(okButton)))
+                        .addGap(18, 18, 18)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addGap(216, 216, 216)
-                                .addComponent(saveButton)))))
+                                .addComponent(encodedString)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(210, 210, 210)
@@ -144,11 +153,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(okButton)
-                    .addComponent(saveButton))
-                .addGap(28, 28, 28)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(okButton)
+                        .addComponent(saveButton)
+                        .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(headerTable)
                     .addComponent(headerTree))
@@ -206,10 +217,15 @@ public class MainWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_okButtonActionPerformed
 
+    private void encodedStringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encodedStringActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_encodedStringActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JTable frequencyTable;
+    private javax.swing.JTable codeTable;
+    private javax.swing.JTextField encodedString;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JLabel headerTable;
     private javax.swing.JLabel headerTree;
