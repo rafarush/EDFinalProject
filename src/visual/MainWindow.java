@@ -205,7 +205,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
         
         // Saves the input string and removes the blank spaces
-        String inputText = stringInput.getText().trim().replace(" ", "");
+        String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
             char letters[] = inputText.toCharArray();
             for (int i = 0; i < letters.length; i++) {
