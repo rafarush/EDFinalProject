@@ -55,19 +55,18 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="scrollPaneFrequencies" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="stringInput" min="-2" pref="403" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                  <Component id="stringInput" min="-2" pref="413" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="okButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="scrollPaneTree" min="-2" pref="473" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="scrollPaneTree" min="-2" pref="473" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="216" max="-2" attributes="0"/>
-                                  <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="encodedString" max="32767" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="saveButton" min="-2" pref="98" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -89,12 +88,15 @@
                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                   <Component id="headerLabel" min="-2" pref="47" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="stringInput" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="encodedString" alignment="0" min="-2" pref="33" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="stringInput" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="headerTable" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="headerTree" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -122,6 +124,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="OK"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="headerLabel">
           <Properties>
@@ -136,14 +141,12 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="frequencyTable">
+            <Component class="javax.swing.JTable" name="codeTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                  <Table columnCount="2" rowCount="10">
+                    <Column editable="false" title="Character" type="java.lang.Object"/>
+                    <Column editable="false" title="Frequency" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>
@@ -157,7 +160,7 @@
         <Component class="javax.swing.JLabel" name="headerTable">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Frequency Table"/>
+            <Property name="text" type="java.lang.String" value="Code Table"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="headerTree">
@@ -172,6 +175,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="encodedString">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Encoded string..."/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="encodedStringActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
