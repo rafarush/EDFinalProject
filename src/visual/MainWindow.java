@@ -4,17 +4,25 @@
  */
 package visual;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author rgarc
  */
 public class MainWindow extends javax.swing.JFrame {
 
+    private DefaultTableModel tableModel;
+    
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        String columns[] = {"Character","Frequency"};
+        tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(columns);
+        frequencyTable.setModel(tableModel);
     }
 
     /**
@@ -47,6 +55,11 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         headerLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -54,15 +67,29 @@ public class MainWindow extends javax.swing.JFrame {
 
         frequencyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Character", "Frequency"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scrollPaneFrequencies.setViewportView(frequencyTable);
 
         headerTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -156,6 +183,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+        Character letters[] = new Character[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
+        for (int i = 0; i < letters.length; i++) {
+            tableModel.addRow(new Object[]{letters[i], i});
+        }
+    }//GEN-LAST:event_okButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
