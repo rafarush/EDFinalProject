@@ -8,24 +8,25 @@ import cu.edu.cujae.ceis.tree.binary.BinaryTree;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
  * @author Jorgito
  */
 public class Huffman {
-    private BinaryTree<NodeHuffman> tree;
+    private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
     private String code;
 
     public Huffman() {
-        tree = new BinaryTree<>();
+        treeHuffman = new TreeHuffman();
         listNodeHuffman = new LinkedList<>();
     }
 
     // gets
     public BinaryTree<NodeHuffman> getTree() {
-        return tree;
+        return treeHuffman;
     }
 
     public LinkedList<NodeHuffman> getListNodeHuffman() {
@@ -38,7 +39,7 @@ public class Huffman {
 
     //sets
     public void setTree(BinaryTree<NodeHuffman> tree) {
-        this.tree = tree;
+        this.treeHuffman = tree;
     }
 
     public void setListNodeHuffman(LinkedList<NodeHuffman> listNodeHuffman) {
@@ -53,6 +54,8 @@ public class Huffman {
         
         LinkedList<NodeHuffman> listNodeH = new LinkedList();
         listNodeH = charToNode(stringToArray(phrase));
+        Queue<NodeHuffman> queueHuffman = listNodeH;
+        treeHuffman = linkedToTree(queueHuffman);
         
     
     
@@ -66,6 +69,8 @@ public class Huffman {
     
     }
     
+    
+    //para cobertir el String en un ArrayList de char
     private ArrayList<Character> stringToArray(String phrase){
         ArrayList<Character> listChar = new ArrayList<>();
         for (Character c : phrase.toCharArray()) {
@@ -75,6 +80,7 @@ public class Huffman {
         return listChar;
     }
     
+    //para convertir un ArrayList un una LinkedList ordenada de NodeHuffman
     private LinkedList<NodeHuffman> charToNode(ArrayList listChar){
         LinkedList<NodeHuffman> listNodeH = new LinkedList();
         //Iterator<Character> iterator = listChar.iterator();
@@ -98,7 +104,7 @@ public class Huffman {
         return listNodeH;
     }
     
-    
+    //para insertar un una lista de NodeHuffman un NodeHuffman en su posicion ordenada
     private LinkedList<NodeHuffman> insertAndOrder(LinkedList<NodeHuffman> listNodeH, NodeHuffman node){
         if(listNodeH.isEmpty())
             listNodeH.add(node);
@@ -115,6 +121,25 @@ public class Huffman {
             }
         }
         return listNodeH;
+    }
+    
+    //para hacer el arbol binario el codigo de Huffman
+    private BinaryTree<NodeHuffman> linkedToTree(Queue<NodeHuffman> queueNodes){
+        BinaryTree<NodeHuffman> tree = new BinaryTree<>();
+        NodeHuffman aux1 = null;
+        NodeHuffman aux2 = null;
+        NodeHuffman root = null;
+        while (queueNodes.size()>1) {
+            aux1 = queueNodes.poll();
+            aux2 = queueNodes.poll();
+            root = new NodeHuffman(aux1.getFrequency()+aux2.getFrequency());
+            
+            
+        }
+        
+    
+        
+        return tree;
     }
     
     

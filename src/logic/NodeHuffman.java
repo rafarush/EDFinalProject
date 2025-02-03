@@ -4,21 +4,30 @@
  */
 package logic;
 
+import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
+
 /**
  *
  * @author Jorgito
  */
-public class NodeHuffman {
-    private char info;
+public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
+    private Character inf;
     private int frequency;
 
     public NodeHuffman(char info, int frequency) {
         setInfo(info);
         setFrequency(frequency);
     }
+    
+    public NodeHuffman( int frequency) {
+        info = null;
+        setFrequency(frequency);
+    }
+    
+    
 
-    public char getInfo() {
-        return info;
+    public char getInf() {
+        return inf;
     }
 
     public int getFrequency() {
@@ -26,7 +35,7 @@ public class NodeHuffman {
     }
 
     public void setInfo(char info) {
-        this.info = info;
+        this.inf = inf;
     }
 
     public void setFrequency(int frequency) {
