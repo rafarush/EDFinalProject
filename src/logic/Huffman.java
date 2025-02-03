@@ -38,9 +38,12 @@ public class Huffman {
     }
 
     //sets
+    /*
     public void setTree(BinaryTree<NodeHuffman> tree) {
         this.treeHuffman = tree;
     }
+    */
+
 
     public void setListNodeHuffman(LinkedList<NodeHuffman> listNodeHuffman) {
         this.listNodeHuffman = listNodeHuffman;
@@ -124,8 +127,9 @@ public class Huffman {
     }
     
     //para hacer el arbol binario el codigo de Huffman
-    private BinaryTree<NodeHuffman> linkedToTree(Queue<NodeHuffman> queueNodes){
-        BinaryTree<NodeHuffman> tree = new BinaryTree<>();
+    private TreeHuffman linkedToTree(Queue<NodeHuffman> queueNodes){
+        //TreeHuffman tree = new TreeHuffman();
+        
         NodeHuffman aux1 = null;
         NodeHuffman aux2 = null;
         NodeHuffman root = null;
@@ -133,11 +137,14 @@ public class Huffman {
             aux1 = queueNodes.poll();
             aux2 = queueNodes.poll();
             root = new NodeHuffman(aux1.getFrequency()+aux2.getFrequency());
-            
-            
+            root.setLeft(aux1);
+            root.setRight(aux2);
+            LinkedList<NodeHuffman> linkedAux = new LinkedList<>(queueNodes);
+            linkedAux = insertAndOrder(linkedAux, root);
+            queueNodes = linkedAux;
         }
-        
-    
+        aux1 = queueNodes.poll();
+        TreeHuffman tree = new TreeHuffman(aux1);
         
         return tree;
     }
