@@ -145,13 +145,13 @@ public class Huffman {
 
         while (queueNodes.size()>1) {
             aux1 = queueNodes.poll();
-            System.out.println(aux1.getInf()+ "--" + aux1.getFrequency());
+            //System.out.println(aux1.getInf()+ "--" + aux1.getFrequency());
             
             aux2 = queueNodes.poll();
-            System.out.println(aux2.getInf()+ "--" + aux2.getFrequency());
+            //System.out.println(aux2.getInf()+ "--" + aux2.getFrequency());
             
             root = new NodeHuffman(aux1.getFrequency()+aux2.getFrequency());
-            System.out.println(root.getInf()+ "--" + root.getFrequency());
+            //System.out.println(root.getInf()+ "--" + root.getFrequency());
             
             root.setLeft(aux1);
             root.setRight(aux2);
@@ -161,7 +161,7 @@ public class Huffman {
         }
         aux1 = queueNodes.poll();
         
-        System.out.println(aux1);
+        //System.out.println(aux1);
         TreeHuffman tree = new TreeHuffman(aux1);
         //tree.setRoot(aux1);
         

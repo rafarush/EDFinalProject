@@ -23,6 +23,7 @@ public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
     public NodeHuffman( int frequency) {
         super();
         //info = null;
+        inf = '•';
         setFrequency(frequency);
     }
     
