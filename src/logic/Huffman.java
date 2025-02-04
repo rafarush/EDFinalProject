@@ -17,11 +17,13 @@ import java.util.Queue;
 public class Huffman {
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
+    private LinkedList<CharacterCode> listCharacterCode;
     private String code;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
         listNodeHuffman = new LinkedList<>();
+        listCharacterCode = new LinkedList<>();
     }
 
     // gets
@@ -145,25 +147,24 @@ public class Huffman {
 
         while (queueNodes.size()>1) {
             aux1 = queueNodes.poll();
-            //System.out.println(aux1.getInf()+ "--" + aux1.getFrequency());
-            
             aux2 = queueNodes.poll();
-            //System.out.println(aux2.getInf()+ "--" + aux2.getFrequency());
-            
             root = new NodeHuffman(aux1.getFrequency()+aux2.getFrequency());
-            //System.out.println(root.getInf()+ "--" + root.getFrequency());
             
             root.setLeft(aux1);
             root.setRight(aux2);
+            
             LinkedList<NodeHuffman> linkedAux = new LinkedList<>(queueNodes);
             linkedAux = insertAndOrder(linkedAux, root);
             queueNodes = linkedAux;
         }
-        aux1 = queueNodes.poll();
         
-        //System.out.println(aux1);
-        TreeHuffman tree = new TreeHuffman(aux1);
-        //tree.setRoot(aux1);
+        
+        TreeHuffman tree = new TreeHuffman();
+        if(queueNodes.size()!=0){
+            aux1 = queueNodes.poll();
+            tree.setRoot(aux1);
+        }
+            
         
         return tree;
     }

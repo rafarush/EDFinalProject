@@ -30,11 +30,11 @@ public class TreeHuffman extends BinaryTree<NodeHuffman>{
         return (NodeHuffman)root;
     }
     
-    /*
+    
     public void setRoot(NodeHuffman root) {
         this.root = root;
     }
-    */
+    
     
     
     
