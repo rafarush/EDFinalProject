@@ -14,7 +14,7 @@ public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
     private Character inf;
     private int frequency;
 
-    public NodeHuffman(char info, int frequency) {
+    public NodeHuffman(Character info, int frequency) {
         setInfo(info);
         setFrequency(frequency);
     }

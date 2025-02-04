@@ -56,9 +56,10 @@ public class Huffman {
     public void huffmanCode (String phrase){
         
         LinkedList<NodeHuffman> listNodeH = new LinkedList();
+        //stringToArray(phrase);
         listNodeH = charToNode(stringToArray(phrase));
-        Queue<NodeHuffman> queueHuffman = listNodeH;
-        treeHuffman = linkedToTree(queueHuffman);
+        //Queue<NodeHuffman> queueHuffman = listNodeH;
+        //treeHuffman = linkedToTree(queueHuffman);
         
     
     
@@ -80,6 +81,9 @@ public class Huffman {
             listChar.add(c);
         }
         
+        for(Character c:listChar)
+            System.out.print(c+" ");
+            
         return listChar;
     }
     
@@ -89,16 +93,18 @@ public class Huffman {
         //Iterator<Character> iterator = listChar.iterator();
         int cont;
         //int pos=0;
-        Character aux;
+        //Character aux;
         int tam=listChar.size();
         for(int i=0; i<tam;i++){
             cont = 1;
             
-            for(int e=i;e<tam;e++){
+            for(int e=i+1;e<tam;e++){
                 if(listChar.get(i)==listChar.get(e)){
-                    tam--;
+                    //System.out.println(listChar.get(i));
+                    //tam--;
                     cont++;
                     listChar.remove(e);
+                    tam=listChar.size();
                 }
             }
             NodeHuffman node = new NodeHuffman((char) listChar.get(i),cont);
@@ -129,6 +135,9 @@ public class Huffman {
     //para hacer el arbol binario el codigo de Huffman
     private TreeHuffman linkedToTree(Queue<NodeHuffman> queueNodes){
         //TreeHuffman tree = new TreeHuffman();
+        
+        
+        // VERIFICAR Q SI LA COLA ES D @ ELEMENTOS NO SE ROMPA
         
         NodeHuffman aux1 = null;
         NodeHuffman aux2 = null;

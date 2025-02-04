@@ -1,5 +1,8 @@
 package runner;
 
+import logic.Huffman;
+import logic.NodeHuffman;
+import logic.TreeHuffman;
 import visual.MainWindow;
 
 /*
@@ -41,6 +44,18 @@ public class Runner {
         }
         //</editor-fold>
 
+        
+        Huffman huff = new Huffman();
+        //String s = "pepe"
+        //Character a= 'a';
+        //NodeHuffman node = new NodeHuffman("perro", 0);
+        huff.huffmanCode("perro");
+        
+        for(NodeHuffman n : huff.getListNodeHuffman()){
+            System.out.println(n.getInf());
+        }
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
