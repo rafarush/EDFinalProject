@@ -4,8 +4,11 @@
  */
 package visual;
 
+import cu.edu.cujae.ceis.tree.Tree;
+import cu.edu.cujae.ceis.tree.binary.BinaryTree;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import test.Testing;
 
 /**
  *
@@ -42,6 +45,7 @@ public class MainWindow extends javax.swing.JFrame {
         scrollPaneFrequencies = new javax.swing.JScrollPane();
         codeTable = new javax.swing.JTable();
         scrollPaneTree = new javax.swing.JScrollPane();
+        treeRepresentation = new javax.swing.JTextArea();
         headerTable = new javax.swing.JLabel();
         headerTree = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
@@ -92,7 +96,13 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        codeTable.setEnabled(false);
         scrollPaneFrequencies.setViewportView(codeTable);
+
+        treeRepresentation.setEditable(false);
+        treeRepresentation.setColumns(20);
+        treeRepresentation.setRows(5);
+        scrollPaneTree.setViewportView(treeRepresentation);
 
         headerTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerTable.setText("Code Table");
@@ -154,10 +164,10 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(okButton)
-                        .addComponent(saveButton)
-                        .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(saveButton))
                     .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -212,6 +222,8 @@ public class MainWindow extends javax.swing.JFrame {
             for (int i = 0; i < letters.length; i++) {
                 tableModel.addRow(new Object[]{letters[i], i});
             }
+            Testing test = new Testing();
+            drawTree(test.getTree());
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
@@ -235,5 +247,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollPaneFrequencies;
     private javax.swing.JScrollPane scrollPaneTree;
     private javax.swing.JTextField stringInput;
+    private javax.swing.JTextArea treeRepresentation;
     // End of variables declaration//GEN-END:variables
+
+    private void drawTree(Tree<String> tree){
+        treeRepresentation.setText(String.valueOf(tree));
+    }
+    
+    
+
 }

@@ -89,10 +89,10 @@
                   <Component id="headerLabel" min="-2" pref="47" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="encodedString" alignment="0" min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="encodedString" alignment="0" min="-2" pref="33" max="-2" attributes="0"/>
                       </Group>
                       <Component id="stringInput" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
@@ -149,6 +149,7 @@
                     <Column editable="false" title="Frequency" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -156,6 +157,15 @@
         <Container class="javax.swing.JScrollPane" name="scrollPaneTree">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="treeRepresentation">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="rows" type="int" value="5"/>
+              </Properties>
+            </Component>
+          </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="headerTable">
           <Properties>
