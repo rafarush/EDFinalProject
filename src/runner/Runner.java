@@ -46,14 +46,10 @@ public class Runner {
 
         
         Huffman huff = new Huffman();
-        //String s = "pepe"
-        //Character a= 'a';
-        //NodeHuffman node = new NodeHuffman("perro", 0);
-        huff.huffmanCode("perro");
+        huff.huffmanCode("alabama");
         
-        for(NodeHuffman n : huff.getListNodeHuffman()){
-            System.out.println(n.getInf());
-        }
+        
+        
         
         
         /* Create and display the form */
