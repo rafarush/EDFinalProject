@@ -84,7 +84,7 @@ public class Huffman {
     }
     
     
-    //para cobertir el String en un ArrayList de char
+    //para convertir el String en un ArrayList de char
     private ArrayList<Character> stringToArray(String phrase){
         ArrayList<Character> listChar = new ArrayList<>();
         for (Character c : phrase.toCharArray()) {
@@ -163,15 +163,11 @@ public class Huffman {
             linkedAux = insertAndOrder(linkedAux, root);
             queueNodes = linkedAux;
         }
-        
-        
         TreeHuffman tree = new TreeHuffman();
         if(queueNodes.size()!=0){
             aux1 = queueNodes.poll();
             tree.setRoot(aux1);
         }
-            
-        
         return tree;
     }
     
