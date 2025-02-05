@@ -47,7 +47,7 @@ public class Runner {
         
         Huffman huff = new Huffman();
         huff.huffmanCode("alabama");
-        S
+        
         
         
         
