@@ -63,11 +63,17 @@ public class Huffman {
         //listNodeHuffman = listNodeH;
         
         listNodeHuffman = charToNode(stringToArray(phrase));
+        
+        for(NodeHuffman n: listNodeHuffman){
+            System.out.println(n.getInf()+"  "+n.getFrequency());
+        }
+        
         Queue<NodeHuffman> queueHuffman = listNodeHuffman;
         treeHuffman = linkedToTree(queueHuffman);
         
         treeHuffman.printTreet(); 
-    
+        
+        
     
     
     
