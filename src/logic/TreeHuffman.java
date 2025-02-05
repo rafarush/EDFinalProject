@@ -39,11 +39,11 @@ public class TreeHuffman extends BinaryTree<NodeHuffman>{
     
     
     
-    public void printTreet(){
-        printTreet((NodeHuffman)root, "", true);
+    public void printTree(){
+        printTree((NodeHuffman)root, "", true);
     }
     
-    public void printTreet(NodeHuffman node, String indent, boolean last){
+    public void printTree(NodeHuffman node, String indent, boolean last){
         if(node!=null){
             System.out.print(indent);
             if(last){
@@ -54,8 +54,8 @@ public class TreeHuffman extends BinaryTree<NodeHuffman>{
                 indent += "|   ";
             }
             System.out.println(node.getFrequency()+"."+node.getInf());
-            printTreet(((NodeHuffman)node.getLeft()), indent, false);
-            printTreet(((NodeHuffman)node.getRight()), indent, true);
+            printTree(((NodeHuffman)node.getLeft()), indent, false);
+            printTree(((NodeHuffman)node.getRight()), indent, true);
         
         }
     }
