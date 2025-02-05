@@ -6,8 +6,12 @@ package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
 import cu.edu.cujae.ceis.tree.binary.BinaryTree;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logic.Huffman;
+import logic.NodeHuffman;
 import test.Testing;
 
 /**
@@ -23,7 +27,8 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String columns[] = {"Character","Code"};
+        this.setResizable(false);
+        String columns[] = {"Character","Frequency","Code"};
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columns);
         codeTable.setModel(tableModel);
@@ -73,23 +78,23 @@ public class MainWindow extends javax.swing.JFrame {
 
         codeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Character", "Frequency"
+                "Character", "Frequency", "Code"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -215,15 +220,27 @@ public class MainWindow extends javax.swing.JFrame {
         }
         System.out.println("Funciona");
         
-        // Saves the input string and removes the blank spaces
+        //Saves the input string and calls the logic functions
         String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
+            /*
             char letters[] = inputText.toCharArray();
+            
             for (int i = 0; i < letters.length; i++) {
                 tableModel.addRow(new Object[]{letters[i], i});
             }
             Testing test = new Testing();
-            drawTree(test.getTree());
+            drawTree(test.getTree());*/
+            Huffman huff = new Huffman();
+            huff.huffmanCode(inputText);
+            LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
+            Iterator<NodeHuffman> i = listForTheTable.iterator();
+            while(i.hasNext()){
+                NodeHuffman aux = i.next();
+                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),"..."});
+            }
+            //treeRepresentation.setText(huff.getTree().toString());
+            
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
