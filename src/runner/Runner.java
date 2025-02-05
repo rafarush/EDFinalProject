@@ -1,5 +1,8 @@
 package runner;
 
+import logic.Huffman;
+import logic.NodeHuffman;
+import logic.TreeHuffman;
 import visual.MainWindow;
 
 /*
@@ -41,6 +44,14 @@ public class Runner {
         }
         //</editor-fold>
 
+        
+        Huffman huff = new Huffman();
+        huff.huffmanCode("alabama");
+        
+        
+        
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

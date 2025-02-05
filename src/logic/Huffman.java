@@ -17,15 +17,17 @@ import java.util.Queue;
 public class Huffman {
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
+    private LinkedList<CharacterCode> listCharacterCode;
     private String code;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
         listNodeHuffman = new LinkedList<>();
+        listCharacterCode = new LinkedList<>();
     }
 
     // gets
-    public BinaryTree<NodeHuffman> getTree() {
+    public TreeHuffman getTree() {
         return treeHuffman;
     }
 
@@ -55,14 +57,23 @@ public class Huffman {
     
     public void huffmanCode (String phrase){
         
-        LinkedList<NodeHuffman> listNodeH = new LinkedList();
-        listNodeH = charToNode(stringToArray(phrase));
-        Queue<NodeHuffman> queueHuffman = listNodeH;
+        //LinkedList<NodeHuffman> listNodeH = new LinkedList();
+        //stringToArray(phrase);
+        //listNodeHuffman = charToNode(stringToArray(phrase));
+        //listNodeHuffman = listNodeH;
+        
+        listNodeHuffman = charToNode(stringToArray(phrase));
+        
+        for(NodeHuffman n: listNodeHuffman){
+            System.out.println(n.getInf()+"  "+n.getFrequency());
+        }
+        
+        Queue<NodeHuffman> queueHuffman = listNodeHuffman;
         treeHuffman = linkedToTree(queueHuffman);
         
-    
-    
-    
+        treeHuffman.printTreet(); 
+        
+        
     
     
     
@@ -79,72 +90,87 @@ public class Huffman {
         for (Character c : phrase.toCharArray()) {
             listChar.add(c);
         }
-        
+            
         return listChar;
     }
     
     //para convertir un ArrayList un una LinkedList ordenada de NodeHuffman
-    private LinkedList<NodeHuffman> charToNode(ArrayList listChar){
+    private LinkedList<NodeHuffman> charToNode(ArrayList<Character> listChar){
         LinkedList<NodeHuffman> listNodeH = new LinkedList();
         //Iterator<Character> iterator = listChar.iterator();
-        int cont;
-        //int pos=0;
-        Character aux;
+        int cont;        
         int tam=listChar.size();
         for(int i=0; i<tam;i++){
             cont = 1;
             
-            for(int e=i;e<tam;e++){
+            for(int e=i+1;e<tam;e++){
                 if(listChar.get(i)==listChar.get(e)){
-                    tam--;
+                    //System.out.println(listChar.get(i));
+                    //tam--;
                     cont++;
                     listChar.remove(e);
+                    tam=listChar.size();
                 }
             }
             NodeHuffman node = new NodeHuffman((char) listChar.get(i),cont);
             listNodeH = insertAndOrder(listNodeH, node);
         }
+        
         return listNodeH;
     }
     
     //para insertar un una lista de NodeHuffman un NodeHuffman en su posicion ordenada
     private LinkedList<NodeHuffman> insertAndOrder(LinkedList<NodeHuffman> listNodeH, NodeHuffman node){
+        //System.err.println(node.getFrequency());
         if(listNodeH.isEmpty())
             listNodeH.add(node);
         else{
             boolean val = false;
             int i=0;
+            
             Iterator<NodeHuffman> iterator = listNodeH.iterator();
             while (!val && iterator.hasNext()) {
-                if (iterator.next().compareTo(node)>=0){
+                if (((NodeHuffman)iterator.next()).compareTo(node)>=0){
                     val=true;
                     listNodeH.add(i, node);
                 }
                 i++;
             }
+            if(!val)
+                listNodeH.add(i, node);
         }
         return listNodeH;
     }
     
     //para hacer el arbol binario el codigo de Huffman
     private TreeHuffman linkedToTree(Queue<NodeHuffman> queueNodes){
-        //TreeHuffman tree = new TreeHuffman();
         
-        NodeHuffman aux1 = null;
-        NodeHuffman aux2 = null;
-        NodeHuffman root = null;
+        // VERIFICAR Q SI LA COLA ES D @ ELEMENTOS NO SE ROMPA
+        
+        NodeHuffman aux1;
+        NodeHuffman aux2;
+        NodeHuffman root;
+
         while (queueNodes.size()>1) {
             aux1 = queueNodes.poll();
             aux2 = queueNodes.poll();
             root = new NodeHuffman(aux1.getFrequency()+aux2.getFrequency());
+            
             root.setLeft(aux1);
             root.setRight(aux2);
+            
             LinkedList<NodeHuffman> linkedAux = new LinkedList<>(queueNodes);
             linkedAux = insertAndOrder(linkedAux, root);
             queueNodes = linkedAux;
         }
-        aux1 = queueNodes.poll();
-        TreeHuffman tree = new TreeHuffman(aux1);
+        
+        
+        TreeHuffman tree = new TreeHuffman();
+        if(queueNodes.size()!=0){
+            aux1 = queueNodes.poll();
+            tree.setRoot(aux1);
+        }
+            
         
         return tree;
     }
