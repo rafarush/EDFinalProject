@@ -1,5 +1,7 @@
 package runner;
 
+import java.util.Iterator;
+import javax.swing.text.html.HTMLDocument;
 import logic.Huffman;
 import logic.NodeHuffman;
 import logic.TreeHuffman;
@@ -47,7 +49,12 @@ public class Runner {
         
         Huffman huff = new Huffman();
         huff.huffmanCode("alabama");
-        huff.huffmanCode("rico");
+        //huff.huffmanCode("rico");
+        Iterator<NodeHuffman> i = huff.getListNodeHuffman().iterator();
+        while (i.hasNext()) {
+            System.out.println(i.next().getInf()+"_main");
+            
+        }
         
         
         

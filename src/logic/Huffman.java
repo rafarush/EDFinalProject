@@ -68,10 +68,10 @@ public class Huffman {
             System.out.println(n.getInf()+"  "+n.getFrequency());
         }
         
-        Queue<NodeHuffman> queueHuffman = listNodeHuffman;
+        Queue<NodeHuffman> queueHuffman = new LinkedList<>(listNodeHuffman);
         treeHuffman = linkedToTree(queueHuffman);
         
-        treeHuffman.printTreet(); 
+        treeHuffman.printTree(); 
         
         
     
