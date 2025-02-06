@@ -66,7 +66,7 @@ public class Huffman {
         Queue<NodeHuffman> queueHuffman = new LinkedList<>(listNodeHuffman);
         treeHuffman = linkedToTree(queueHuffman); 
         
-        listNodeHuffman=
+        listNodeHuffman=linkedCode();
     
     
     
