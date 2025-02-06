@@ -17,13 +17,13 @@ import java.util.Queue;
 public class Huffman {
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
-    private LinkedList<CharacterCode> listCharacterCode;
+    //private LinkedList<CharacterCode> listCharacterCode;
     private String code;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
         listNodeHuffman = new LinkedList<>();
-        listCharacterCode = new LinkedList<>();
+        //listCharacterCode = new LinkedList<>();
     }
 
     // gets
@@ -63,24 +63,49 @@ public class Huffman {
         //listNodeHuffman = listNodeH;
         
         listNodeHuffman = charToNode(stringToArray(phrase));
+        Queue<NodeHuffman> queueHuffman = new LinkedList<>(listNodeHuffman);
+        treeHuffman = linkedToTree(queueHuffman); 
         
-        for(NodeHuffman n: listNodeHuffman){
-            System.out.println(n.getInf()+"  "+n.getFrequency());
+        listNodeHuffman=
+    
+    
+    
+    
+    
+    
+    
+    }
+    
+    //para buscar el codigo de cada caracter
+    private LinkedList<NodeHuffman> linkedCode(){
+        LinkedList<NodeHuffman> listNode = new LinkedList<>();
+        NodeHuffman root = treeHuffman.getRoot();
+        if(((Character)root.getInf()).equals('•')){
+            listNode.addAll(linkedCode("00",((NodeHuffman)root.getLeft())));
+            listNode.addAll(linkedCode("01",((NodeHuffman)root.getRight())));
+        }else{
+            root.setCode("0");
+            listNode.add(root);
         }
         
-        Queue<NodeHuffman> queueHuffman = new LinkedList<>(listNodeHuffman);
-        treeHuffman = linkedToTree(queueHuffman);
-        
-        treeHuffman.printTree(); 
         
         
+        
+        return listNode;
+    }
     
-    
-    
-    
-    
-    
-    
+    private LinkedList<NodeHuffman> linkedCode(String code, NodeHuffman node){
+        LinkedList<NodeHuffman> listNode = new LinkedList<>();
+        if(((Character)node.getInf()).equals('•')){
+            listNode.addAll(linkedCode(code+"0",((NodeHuffman)node.getLeft())));
+            listNode.addAll(linkedCode(code+"1",((NodeHuffman)node.getRight())));
+        }else{
+            node.setCode(code);
+            listNode.add(node);
+        }
+        
+        
+        return listNode;
     }
     
     
