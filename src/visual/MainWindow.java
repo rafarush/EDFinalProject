@@ -17,8 +17,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import logic.Huffman;
 import logic.NodeHuffman;
-import test.Convert;
-import test.FileManager;
+import logic.Convert;
+import logic.FileManager;
 
 /**
  *
