@@ -5,12 +5,19 @@
 package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import logic.Huffman;
 import logic.NodeHuffman;
+import test.Convert;
 
 /**
  *
@@ -53,6 +60,7 @@ public class MainWindow extends javax.swing.JFrame {
         headerTree = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         encodedString = new javax.swing.JTextField();
+        loadButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,7 +121,7 @@ public class MainWindow extends javax.swing.JFrame {
         headerTree.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headerTree.setText("Huffman Tree");
 
-        saveButton.setText("Save results");
+        saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -125,6 +133,13 @@ public class MainWindow extends javax.swing.JFrame {
         encodedString.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 encodedStringActionPerformed(evt);
+            }
+        });
+
+        loadButton.setText("Load");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonActionPerformed(evt);
             }
         });
 
@@ -146,13 +161,15 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(okButton)))
                         .addGap(18, 18, 18)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(MainPanelLayout.createSequentialGroup()
                                 .addComponent(encodedString)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(210, 210, 210)
                 .addComponent(headerTable, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,7 +187,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(okButton)
-                        .addComponent(saveButton))
+                        .addComponent(saveButton)
+                        .addComponent(loadButton))
                     .addComponent(stringInput, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -189,7 +207,7 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,6 +225,34 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save File");
+
+        // Filtrar para mostrar solo archivos específicos (opcional)
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Binary File", "dat");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            System.out.println("Save file as: " + fileToSave.getAbsolutePath());
+            
+            if (!fileToSave.getAbsolutePath().endsWith(".dat")) {
+                fileToSave = new File(fileToSave + ".dat");
+            }
+
+            // Aquí puedes añadir el código para guardar el archivo
+            try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
+                // Contenido binario a guardar en el archivo
+                
+                byte[] content = Convert.toByteArray("File saving test"); // Ejemplo de content binario
+                fos.write(content);
+                System.out.println("File saved successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -216,14 +262,15 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = numberOfRows-1; i >= 0; i--) {
             tableModel.removeRow(i);
         }
-        System.out.println("Funciona");
         
         //Saves the input string and calls the logic functions
         String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
+            
             //Initializes the controller class
             Huffman huff = new Huffman();
             huff.huffmanCode(inputText);
+            
             //Update the table
             LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
             Iterator<NodeHuffman> i = listForTheTable.iterator();
@@ -231,7 +278,8 @@ public class MainWindow extends javax.swing.JFrame {
                 NodeHuffman aux = i.next();
                 tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),"..."});
             }
-            //treeRepresentation.setText(huff.getTree().toString());
+            
+            //Displays the tree representation in the JFrame
             String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
             treeRepresentation.setText(treeRepresentationS);
             
@@ -245,6 +293,39 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_encodedStringActionPerformed
 
+    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Cargar archivo");
+
+        // Filtrar para mostrar solo archivos con la extensión .dat (opcional)
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de datos", "dat");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showOpenDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToLoad = fileChooser.getSelectedFile();
+            System.out.println("Cargar archivo: " + fileToLoad.getAbsolutePath());
+
+            // Aquí puedes añadir el código para leer el archivo binario
+            try (FileInputStream fis = new FileInputStream(fileToLoad)) {
+                // Leer el contenido binario del archivo
+                byte[] contenido = fis.readAllBytes();
+                System.out.println("Contenido del archivo: ");
+                for (byte b : contenido) {
+                    System.out.printf("%02x ", b);
+                }
+                String test = (String) Convert.toObject(contenido);
+                System.out.println(test);
+                System.out.println("\nArchivo cargado exitosamente.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }//GEN-LAST:event_loadButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
@@ -253,6 +334,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel headerLabel;
     private javax.swing.JLabel headerTable;
     private javax.swing.JLabel headerTree;
+    private javax.swing.JButton loadButton;
     private javax.swing.JButton okButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JScrollPane scrollPaneFrequencies;
