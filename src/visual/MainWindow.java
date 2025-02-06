@@ -276,7 +276,7 @@ public class MainWindow extends javax.swing.JFrame {
             Iterator<NodeHuffman> i = listForTheTable.iterator();
             while(i.hasNext()){
                 NodeHuffman aux = i.next();
-                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),"..."});
+                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
             }
             
             //Displays the tree representation in the JFrame
