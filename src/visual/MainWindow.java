@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import logic.Huffman;
 import logic.NodeHuffman;
 import test.Convert;
+import test.FileManager;
 
 /**
  *
@@ -225,34 +226,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save File");
-
-        // Filtrar para mostrar solo archivos específicos (opcional)
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Binary File", "dat");
-        fileChooser.setFileFilter(filter);
-
-        int userSelection = fileChooser.showSaveDialog(null);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            System.out.println("Save file as: " + fileToSave.getAbsolutePath());
-            
-            if (!fileToSave.getAbsolutePath().endsWith(".dat")) {
-                fileToSave = new File(fileToSave + ".dat");
-            }
-
-            // Aquí puedes añadir el código para guardar el archivo
-            try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
-                // Contenido binario a guardar en el archivo
-                
-                byte[] content = Convert.toByteArray("File saving test"); // Ejemplo de content binario
-                fos.write(content);
-                System.out.println("File saved successfully.");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        FileManager.saveFile();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -295,35 +269,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Cargar archivo");
-
-        // Filtrar para mostrar solo archivos con la extensión .dat (opcional)
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de datos", "dat");
-        fileChooser.setFileFilter(filter);
-
-        int userSelection = fileChooser.showOpenDialog(null);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToLoad = fileChooser.getSelectedFile();
-            System.out.println("Cargar archivo: " + fileToLoad.getAbsolutePath());
-
-            // Aquí puedes añadir el código para leer el archivo binario
-            try (FileInputStream fis = new FileInputStream(fileToLoad)) {
-                // Leer el contenido binario del archivo
-                byte[] contenido = fis.readAllBytes();
-                System.out.println("Contenido del archivo: ");
-                for (byte b : contenido) {
-                    System.out.printf("%02x ", b);
-                }
-                String test = (String) Convert.toObject(contenido);
-                System.out.println(test);
-                System.out.println("\nArchivo cargado exitosamente.");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        
+        FileManager.loadFile();
     }//GEN-LAST:event_loadButtonActionPerformed
 
 
