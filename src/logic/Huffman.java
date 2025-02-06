@@ -136,6 +136,7 @@ public class Huffman {
                     cont++;
                     listChar.remove(e);
                     tam=listChar.size();
+                    e--;
                 }
             }
             NodeHuffman node = new NodeHuffman((char) listChar.get(i),cont);
