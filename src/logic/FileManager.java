@@ -69,11 +69,10 @@ public class FileManager {
                 // Leer el contenido binario del archivo
                 byte[] contenido = fis.readAllBytes();
                 System.out.println("Contenido del archivo: ");
-                for (byte b : contenido) {
+                /*for (byte b : contenido) {
                     System.out.printf("%02x ", b);
-                }
+                }*/
                 String test = (String) Convert.toObject(contenido);
-                System.out.println();
                 System.out.println(test);
                 System.out.println("\nArchivo cargado exitosamente.");
             } catch (IOException e) {
