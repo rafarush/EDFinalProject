@@ -13,11 +13,13 @@ import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
 public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
     private char inf;
     private int frequency;
+    private String code;
 
     public NodeHuffman(char inf, int frequency) {
         super();
         setInf(inf);
         setFrequency(frequency);
+        code = null;
     }
     
     public NodeHuffman( int frequency) {
@@ -25,9 +27,16 @@ public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
         //info = null;
         inf = '•';
         setFrequency(frequency);
+        code = null;
     }
-    
-    
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public char getInf() {
         return inf;

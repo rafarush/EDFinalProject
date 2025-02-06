@@ -17,13 +17,13 @@ import java.util.Queue;
 public class Huffman {
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
-    private LinkedList<CharacterCode> listCharacterCode;
+    //private LinkedList<CharacterCode> listCharacterCode;
     private String code;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
         listNodeHuffman = new LinkedList<>();
-        listCharacterCode = new LinkedList<>();
+        //listCharacterCode = new LinkedList<>();
     }
 
     // gets
@@ -63,15 +63,8 @@ public class Huffman {
         //listNodeHuffman = listNodeH;
         
         listNodeHuffman = charToNode(stringToArray(phrase));
-        
-        for(NodeHuffman n: listNodeHuffman){
-            System.out.println(n.getInf()+"  "+n.getFrequency());
-        }
-        
         Queue<NodeHuffman> queueHuffman = new LinkedList<>(listNodeHuffman);
-        treeHuffman = linkedToTree(queueHuffman);
-        
-        treeHuffman.printTree(); 
+        treeHuffman = linkedToTree(queueHuffman); 
         
         
     
