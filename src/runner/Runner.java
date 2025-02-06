@@ -48,7 +48,7 @@ public class Runner {
 
         
         Huffman huff = new Huffman();
-        huff.huffmanCode("alabama");
+        huff.huffmanCode("ññaa");
         //huff.huffmanCode("rico");
         Iterator<NodeHuffman> i = huff.getListNodeHuffman().iterator();
         while (i.hasNext()) {

@@ -104,7 +104,8 @@ public class Huffman {
             cont = 1;
             
             for(int e=i+1;e<tam;e++){
-                if(listChar.get(i)==listChar.get(e)){
+                if(listChar.get(i).equals(listChar.get(e))){
+                //if(listChar.get(i)==listChar.get(e)){
                     //System.out.println(listChar.get(i));
                     //tam--;
                     cont++;
