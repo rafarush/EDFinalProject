@@ -5,10 +5,12 @@
 package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
-import cu.edu.cujae.ceis.tree.binary.BinaryTree;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import test.Testing;
+import logic.Huffman;
+import logic.NodeHuffman;
 
 /**
  *
@@ -23,7 +25,8 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String columns[] = {"Character","Code"};
+        this.setResizable(false);
+        String columns[] = {"Character","Frequency","Code"};
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columns);
         codeTable.setModel(tableModel);
@@ -73,23 +76,23 @@ public class MainWindow extends javax.swing.JFrame {
 
         codeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Character", "Frequency"
+                "Character", "Frequency", "Code"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -215,15 +218,23 @@ public class MainWindow extends javax.swing.JFrame {
         }
         System.out.println("Funciona");
         
-        // Saves the input string and removes the blank spaces
+        //Saves the input string and calls the logic functions
         String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
-            char letters[] = inputText.toCharArray();
-            for (int i = 0; i < letters.length; i++) {
-                tableModel.addRow(new Object[]{letters[i], i});
+            //Initializes the controller class
+            Huffman huff = new Huffman();
+            huff.huffmanCode(inputText);
+            //Update the table
+            LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
+            Iterator<NodeHuffman> i = listForTheTable.iterator();
+            while(i.hasNext()){
+                NodeHuffman aux = i.next();
+                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),"..."});
             }
-            Testing test = new Testing();
-            drawTree(test.getTree());
+            //treeRepresentation.setText(huff.getTree().toString());
+            String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+            treeRepresentation.setText(treeRepresentationS);
+            
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
@@ -254,6 +265,26 @@ public class MainWindow extends javax.swing.JFrame {
         treeRepresentation.setText(String.valueOf(tree));
     }
     
+    public String printTree(NodeHuffman root) {
+        return printTree(root, "", true);
+    }
     
+    public String printTree(NodeHuffman node, String indent, boolean last) {
+        StringBuilder treeStr = new StringBuilder();
+        if (node != null) {
+            treeStr.append(indent);
+        if (last) {
+            treeStr.append("└── ");
+            indent += "    ";
+        } else {
+            treeStr.append("├── ");
+            indent += "│   ";
+        }
+        treeStr.append(node.getFrequency()).append(".").append(node.getInf()).append("\n");
+        treeStr.append(printTree((NodeHuffman) node.getLeft(), indent, false));
+        treeStr.append(printTree((NodeHuffman) node.getRight(), indent, true));
+        }
+        return treeStr.toString();
+    }
 
 }
