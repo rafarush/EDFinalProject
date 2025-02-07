@@ -47,19 +47,6 @@ public class Runner {
         //</editor-fold>
 
         
-        Huffman huff = new Huffman();
-        huff.huffmanCode("ññaa");
-        //huff.huffmanCode("rico");
-        Iterator<NodeHuffman> i = huff.getListNodeHuffman().iterator();
-        while (i.hasNext()) {
-            System.out.println(i.next().getInf()+"_main");
-            
-        }
-        
-        
-        
-        
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
