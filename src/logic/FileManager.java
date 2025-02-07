@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -18,7 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class FileManager {
     
-    public static void saveFile(){
+    public static void saveFile(Huffman huff){
         
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save File");
@@ -38,11 +39,13 @@ public class FileManager {
             }
 
             // Aquí puedes añadir el código para guardar el archivo
-            try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
+            //try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
+            try (RandomAccessFile file = new RandomAccessFile(fileToSave, "rw")) {
                 // Contenido binario a guardar en el archivo
                 
-                byte[] content = Convert.toBytes("File saving test"); // Ejemplo de binario
-                fos.write(content);
+                byte[] content = Convert.toBytes(huff); // Ejemplo de binario
+                //file.writeInt(content.length);
+                file.write(content);
                 System.out.println("File saved successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -50,9 +53,10 @@ public class FileManager {
         }
     }
     
-    public static void loadFile() throws ClassNotFoundException{
+    public static Huffman loadFile() throws ClassNotFoundException{
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Cargar archivo");
+        fileChooser.setDialogTitle("Load file");
+        Huffman huff = null;
 
         // Filtrar para mostrar solo archivos con la extensión .dat (opcional)
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de datos", "dat");
@@ -62,23 +66,27 @@ public class FileManager {
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToLoad = fileChooser.getSelectedFile();
-            System.out.println("Cargar archivo: " + fileToLoad.getAbsolutePath());
+            huff = new Huffman();
+            System.out.println("Load file: " + fileToLoad.getAbsolutePath());
 
             // Aquí puedes añadir el código para leer el archivo binario
-            try (FileInputStream fis = new FileInputStream(fileToLoad)) {
+            try (RandomAccessFile file = new RandomAccessFile(fileToLoad, "rw")) {
                 // Leer el contenido binario del archivo
-                byte[] contenido = fis.readAllBytes();
-                System.out.println("Contenido del archivo: ");
+                byte[] contenido = {};
+                file.readFully(contenido);
+                huff = (Huffman) Convert.toObject(contenido);
+                //System.out.println("File content: ");
                 /*for (byte b : contenido) {
                     System.out.printf("%02x ", b);
                 }*/
-                String test = (String) Convert.toObject(contenido);
-                System.out.println(test);
-                System.out.println("\nArchivo cargado exitosamente.");
+                //String test = (String) Convert.toObject(contenido);
+                //System.out.println(test);
+                System.out.println("\nFile loaded successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return huff;
     }
     
 }
