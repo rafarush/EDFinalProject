@@ -41,7 +41,7 @@ public class FileManager {
             try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
                 // Contenido binario a guardar en el archivo
                 
-                byte[] content = Convert.toByteArray("File saving test"); // Ejemplo de binario
+                byte[] content = Convert.toBytes("File saving test"); // Ejemplo de binario
                 fos.write(content);
                 System.out.println("File saved successfully.");
             } catch (IOException e) {
@@ -50,7 +50,7 @@ public class FileManager {
         }
     }
     
-    public static void loadFile(){
+    public static void loadFile() throws ClassNotFoundException{
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Cargar archivo");
 
