@@ -5,16 +5,23 @@
 package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
+import cu.edu.cujae.ceis.tree.TreeNode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import logic.Huffman;
 import logic.NodeHuffman;
 import logic.Convert;
@@ -27,7 +34,10 @@ import logic.FileManager;
 public class MainWindow extends javax.swing.JFrame {
 
     private DefaultTableModel tableModel;
-    
+    //private TreeModel treeModel;
+    //private DefaultTreeModel treeModel;
+    //private DefaultMutableTreeNode jTreeRoot;
+    private Huffman huff;
     /**
      * Creates new form MainWindow
      */
@@ -38,6 +48,17 @@ public class MainWindow extends javax.swing.JFrame {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columns);
         codeTable.setModel(tableModel);
+        
+        //Initializes the controller class
+        huff = new Huffman();
+            
+        //arbol en jtree
+        /*jTreeRoot = new DefaultMutableTreeNode(huff.getTree().getRoot());
+        jTreeRoot = ;
+        treeModel = new DefaultTreeModel(jTreeRoot);
+        jTree1 = new JTree(treeModel);
+        add(jTree1);*/
+        
     }
 
     /**
@@ -64,6 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
         loadButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Huffman Coder");
 
         stringInput.setText("Please, write the string to code...");
         stringInput.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +133,6 @@ public class MainWindow extends javax.swing.JFrame {
         codeTable.setEnabled(false);
         scrollPaneFrequencies.setViewportView(codeTable);
 
-        treeRepresentation.setEditable(false);
         treeRepresentation.setColumns(20);
         treeRepresentation.setRows(5);
         scrollPaneTree.setViewportView(treeRepresentation);
@@ -199,7 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollPaneTree)
                     .addComponent(scrollPaneFrequencies))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,7 +229,7 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,40 +247,15 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        FileManager.saveFile();
+        FileManager.saveFile(huff);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
-        // Removes all rows in the table
-        int numberOfRows = tableModel.getRowCount();
-        for (int i = numberOfRows-1; i >= 0; i--) {
-            tableModel.removeRow(i);
-        }
+        clearTable();
         
         //Saves the input string and calls the logic functions
-        String inputText = stringInput.getText();
-        if(!inputText.isEmpty()){
-            
-            //Initializes the controller class
-            Huffman huff = new Huffman();
-            huff.huffmanCode(inputText);
-            
-            //Update the table
-            LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
-            Iterator<NodeHuffman> i = listForTheTable.iterator();
-            while(i.hasNext()){
-                NodeHuffman aux = i.next();
-                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
-            }
-            
-            //Displays the tree representation in the JFrame
-            String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
-            treeRepresentation.setText(treeRepresentationS);
-            
-        }else{
-            JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
-        }
+        updateFrame();
         
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -268,8 +264,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_encodedStringActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        // TODO add your handling code here:
-        FileManager.loadFile();
+        try {
+            // TODO add your handling code here:
+            huff = FileManager.loadFile();
+            clearTable();
+            updateFrame();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loadButtonActionPerformed
 
 
@@ -290,7 +292,7 @@ public class MainWindow extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void drawTree(Tree<String> tree){
-        treeRepresentation.setText(String.valueOf(tree));
+        //treeRepresentation.setText(String.valueOf(tree));
     }
     
     public String printTree(NodeHuffman root) {
@@ -315,4 +317,33 @@ public class MainWindow extends javax.swing.JFrame {
         return treeStr.toString();
     }
 
+    public void updateFrame(){
+        //Saves the input string and calls the logic functions
+        String inputText = stringInput.getText();
+        if(!inputText.isEmpty()){
+            huff.huffmanCode(inputText);
+            
+            //Update the table
+            LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
+            Iterator<NodeHuffman> i = listForTheTable.iterator();
+            while(i.hasNext()){
+                NodeHuffman aux = i.next();
+                tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
+            }
+            
+            //Displays the tree representation in the JFrame
+            String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+            treeRepresentation.setText(treeRepresentationS);
+        }else{
+            JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
+        }
+    }
+    
+    public void clearTable(){
+        // Removes all rows in the table
+        int numberOfRows = tableModel.getRowCount();
+        for (int i = numberOfRows-1; i >= 0; i--) {
+            tableModel.removeRow(i);
+        }
+    }
 }
