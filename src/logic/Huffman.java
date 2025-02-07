@@ -5,6 +5,7 @@
 package logic;
 
 import cu.edu.cujae.ceis.tree.binary.BinaryTree;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,11 +15,12 @@ import java.util.Queue;
  *
  * @author Jorgito
  */
-public class Huffman {
+public class Huffman implements Serializable{
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
     private String phrase;
     private String code;
+    private static final long serialVersionUID = 1L;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
