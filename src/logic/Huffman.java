@@ -5,6 +5,7 @@
 package logic;
 
 import cu.edu.cujae.ceis.tree.binary.BinaryTree;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,11 +15,12 @@ import java.util.Queue;
  *
  * @author Jorgito
  */
-public class Huffman {
+public class Huffman implements Serializable{
     private TreeHuffman treeHuffman;
     private LinkedList<NodeHuffman> listNodeHuffman;
-    //private LinkedList<CharacterCode> listCharacterCode;
+    private String phrase;
     private String code;
+    private static final long serialVersionUID = 1L;
 
     public Huffman() {
         treeHuffman = new TreeHuffman();
@@ -26,9 +28,15 @@ public class Huffman {
         //listCharacterCode = new LinkedList<>();
     }
 
+    
+    
     // gets
     public TreeHuffman getTree() {
         return treeHuffman;
+    }
+
+    public String getPhrase() {
+        return phrase;
     }
 
     public LinkedList<NodeHuffman> getListNodeHuffman() {
@@ -46,6 +54,10 @@ public class Huffman {
     }
     */
 
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
+    }
+
 
     public void setListNodeHuffman(LinkedList<NodeHuffman> listNodeHuffman) {
         this.listNodeHuffman = listNodeHuffman;
@@ -56,7 +68,7 @@ public class Huffman {
     }
     
     public void huffmanCode (String phrase){
-        
+        setPhrase(phrase);
         //LinkedList<NodeHuffman> listNodeH = new LinkedList();
         //stringToArray(phrase);
         //listNodeHuffman = charToNode(stringToArray(phrase));
@@ -67,7 +79,8 @@ public class Huffman {
         treeHuffman = linkedToTree(queueHuffman); 
         
         listNodeHuffman=linkedCode();
-    
+        
+        code=treeToCode(stringToLinked(phrase));
     
     
     
@@ -75,6 +88,35 @@ public class Huffman {
     
     
     }
+    
+    // para buscar el codigo de codigo de la frase
+    public String treeToCode(LinkedList<Character> phrase){
+        String codeH="";
+        Iterator<Character> iterator=phrase.iterator();
+        
+        while (iterator.hasNext()) {
+            codeH=codeH+" "+charToCode(iterator.next());
+        }
+        return codeH;
+    }
+    
+    private String charToCode(Character character){
+        String code="";
+        Iterator<NodeHuffman> iterator = listNodeHuffman.iterator();
+        boolean val=false;
+        while (iterator.hasNext() && !val) {
+            NodeHuffman aux = iterator.next();
+            if(character.equals(aux.getInf())){
+                val=true;
+                code=aux.getCode();
+            }
+        }
+        
+        return code;
+    }
+    
+    
+    
     
     //para buscar el codigo de cada caracter
     private LinkedList<NodeHuffman> linkedCode(){
@@ -87,10 +129,6 @@ public class Huffman {
             root.setCode("0");
             listNode.add(root);
         }
-        
-        
-        
-        
         return listNode;
     }
     
@@ -108,6 +146,15 @@ public class Huffman {
         return listNode;
     }
     
+    //para convertir el String en un LinkedList de char
+    private LinkedList<Character> stringToLinked(String phrase){
+        LinkedList<Character> listChar = new LinkedList<>();
+        for (Character c : phrase.toCharArray()) {
+            listChar.add(c);
+        }
+            
+        return listChar;
+    }
     
     //para convertir el String en un ArrayList de char
     private ArrayList<Character> stringToArray(String phrase){
