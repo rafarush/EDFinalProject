@@ -49,7 +49,7 @@ public class Huffman implements Serializable{
     //sets
     
     public void setTree(TreeHuffman tree) {
-        this.treeHuffman.setRoot(tree.getRoot());
+        this.treeHuffman = tree;
     }
     
 

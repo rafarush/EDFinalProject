@@ -12,8 +12,8 @@ import java.io.Serializable;
  *
  * @author Jorgito
  */
-public class TreeHuffman extends BinaryTree<NodeHuffman> implements Serializable{
-    //private NodeHuffman root;
+public class TreeHuffman implements Serializable{
+    private NodeHuffman root;
     private static final long serialVersionUID = 1L;
     
     public TreeHuffman(NodeHuffman nodeRoot){
