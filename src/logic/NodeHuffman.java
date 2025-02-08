@@ -5,15 +5,19 @@
 package logic;
 
 import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
+import java.io.Serializable;
 
 /**
  *
  * @author Jorgito
  */
-public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
+public class NodeHuffman implements Serializable{
     private char inf;
     private int frequency;
     private String code;
+    private static final long serialVersionUID = 1L;
+    private NodeHuffman left;
+    private NodeHuffman right;
 
     public NodeHuffman(char inf, int frequency) {
         super();
@@ -44,6 +48,22 @@ public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
 
     public int getFrequency() {
         return frequency;
+    }
+
+    public NodeHuffman getLeft() {
+        return left;
+    }
+
+    public NodeHuffman getRight() {
+        return right;
+    }
+
+    public void setLeft(NodeHuffman left) {
+        this.left = left;
+    }
+
+    public void setRight(NodeHuffman right) {
+        this.right = right;
     }
 
     public void setInf(char inf) {

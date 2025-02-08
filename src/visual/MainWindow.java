@@ -6,14 +6,17 @@ package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
 import cu.edu.cujae.ceis.tree.TreeNode;
+import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
@@ -26,6 +29,7 @@ import logic.Huffman;
 import logic.NodeHuffman;
 import logic.Convert;
 import logic.FileManager;
+import logic.TreeHuffman;
 
 /**
  *
@@ -43,14 +47,15 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/utils/ico/appico.png")).getImage());
         this.setResizable(false);
         String columns[] = {"Character","Frequency","Code"};
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columns);
         codeTable.setModel(tableModel);
+        okButton.requestFocusInWindow();
         
-        //Initializes the controller class
-        huff = new Huffman();
+        
             
         //arbol en jtree
         /*jTreeRoot = new DefaultMutableTreeNode(huff.getTree().getRoot());
@@ -83,11 +88,20 @@ public class MainWindow extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         encodedString = new javax.swing.JTextField();
         loadButton = new javax.swing.JButton();
+        helpButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Huffman Coder");
 
         stringInput.setText("Please, write the string to code...");
+        stringInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                stringInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                stringInputFocusLost(evt);
+            }
+        });
         stringInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stringInputActionPerformed(evt);
@@ -133,6 +147,7 @@ public class MainWindow extends javax.swing.JFrame {
         codeTable.setEnabled(false);
         scrollPaneFrequencies.setViewportView(codeTable);
 
+        treeRepresentation.setEditable(false);
         treeRepresentation.setColumns(20);
         treeRepresentation.setRows(5);
         scrollPaneTree.setViewportView(treeRepresentation);
@@ -165,6 +180,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        helpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/utils/ico/helpico.png"))); // NOI18N
+        helpButton.setToolTipText("Help");
+        helpButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        helpButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                helpButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -172,8 +196,10 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGap(334, 334, 334)
-                        .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(387, 387, 387)
+                        .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -183,27 +209,29 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(okButton)))
                         .addGap(18, 18, 18)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(encodedString)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                            .addComponent(scrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(210, 210, 210)
                 .addComponent(headerTable, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(headerTree, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(189, 189, 189))
+                .addGap(190, 190, 190))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(encodedString, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,9 +255,7 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,7 +273,10 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        FileManager.saveFile(huff);
+        if(tableModel.getRowCount()>0)
+            FileManager.saveFile(huff);
+        else
+            JOptionPane.showMessageDialog(null, "There is nothing to save");
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -266,13 +295,43 @@ public class MainWindow extends javax.swing.JFrame {
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         try {
             // TODO add your handling code here:
-            huff = FileManager.loadFile();
-            clearTable();
-            updateFrame();
+            Huffman huff = FileManager.loadFile();
+            if(huff!=null){
+               clearTable();
+               updateFrameL(huff); 
+            }else{
+                JOptionPane.showMessageDialog(null, "Something gone wrong while loading the file");
+            }
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loadButtonActionPerformed
+
+    private void helpButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_helpButtonMouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Welcome to Huffman Coder!!!\nThis program"
+                + " allows you to encode any phrase you want. Type the text \nyou want"
+                + " to encode in the upper-left text field and press the ok button."
+                + " \nThen you will get your encode text in the upper-left text field."
+                + " In addition \nyou will get a table with the characters, its code and"
+                + " frequency. Lastly \nyou will get the Huffman tree representation as well."
+                + "\nEnjoy our program, use it wisely and with no bad intentions ;)");
+    }//GEN-LAST:event_helpButtonMouseClicked
+
+    private void stringInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stringInputFocusGained
+        // TODO add your handling code here:
+        if (stringInput.getText().equals("Please, write the string to code...")) {
+            stringInput.setText("");
+        }
+    }//GEN-LAST:event_stringInputFocusGained
+
+    private void stringInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stringInputFocusLost
+        // TODO add your handling code here:
+        if (stringInput.getText().isEmpty()) {
+            stringInput.setText("Please, write the string to code...");
+        }
+    }//GEN-LAST:event_stringInputFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -282,6 +341,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel headerLabel;
     private javax.swing.JLabel headerTable;
     private javax.swing.JLabel headerTree;
+    private javax.swing.JLabel helpButton;
     private javax.swing.JButton loadButton;
     private javax.swing.JButton okButton;
     private javax.swing.JButton saveButton;
@@ -321,6 +381,8 @@ public class MainWindow extends javax.swing.JFrame {
         //Saves the input string and calls the logic functions
         String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
+            //Initializes the controller class
+            huff = new Huffman();
             huff.huffmanCode(inputText);
             
             //Update the table
@@ -330,13 +392,34 @@ public class MainWindow extends javax.swing.JFrame {
                 NodeHuffman aux = i.next();
                 tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
             }
+            //Displays the encoded phrase
+            encodedString.setText(huff.getCode());
             
             //Displays the tree representation in the JFrame
             String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+            //String treeRepresentationS = generarArbolConectores((NodeHuffman)huff.getTree().getRoot());
             treeRepresentation.setText(treeRepresentationS);
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
+    }
+    
+    public void updateFrameL(Huffman huff){
+        //Update the table
+        LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
+        Iterator<NodeHuffman> i = listForTheTable.iterator();
+        while(i.hasNext()){
+            NodeHuffman aux = i.next();
+            tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
+        }
+        //Displays the phrase
+        stringInput.setText(huff.getPhrase());
+        //Displays the encoded phrase
+        encodedString.setText(huff.getCode());
+            
+        //Displays the tree representation in the JFrame
+        String treeRepresentationS = printTree( (NodeHuffman) huff.getTree().getRoot());
+        treeRepresentation.setText(treeRepresentationS);
     }
     
     public void clearTable(){
@@ -345,5 +428,74 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = numberOfRows-1; i >= 0; i--) {
             tableModel.removeRow(i);
         }
+    }
+    
+    public static String generarArbolConectores(NodeHuffman root) {
+        ArrayList<ArrayList<String>> lineas = new ArrayList<>();
+        ArrayList<NodeHuffman> nivel = new ArrayList<>();
+        ArrayList<NodeHuffman> siguiente = new ArrayList<>();
+
+        nivel.add(root);
+        int nn = 1;
+        int ancho = 1;
+
+        while (nn != 0) {
+            ArrayList<String> linea = new ArrayList<>();
+            nn = 0;
+            for (NodeHuffman nodo : nivel) {
+                if (nodo == null) {
+                    linea.add("");
+                    siguiente.add(null);
+                    siguiente.add(null);
+                } else {
+                    String valor = String.valueOf(nodo.getFrequency())+"."+String.valueOf(nodo.getInf());
+                    linea.add(valor);
+                    siguiente.add((NodeHuffman)nodo.getLeft());
+                    siguiente.add((NodeHuffman)nodo.getRight());
+                    if ((NodeHuffman)nodo.getLeft() != null) nn++;
+                    if ((NodeHuffman)nodo.getRight() != null) nn++;
+                }
+            }
+        
+            lineas.add(linea);
+            ancho = Math.max(ancho, linea.size());
+            nivel = siguiente;
+            siguiente = new ArrayList<>();
+        }
+    
+        // Construcción de líneas con conectores
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lineas.size(); i++) {
+            ArrayList<String> linea = lineas.get(i);
+            int espacio = (int) Math.pow(2, (lineas.size() - i - 1)) - 1;
+            if (i > 0) {
+            StringBuilder conectores = new StringBuilder();
+            conectores.append(" ".repeat(espacio)); // Espacio inicial
+
+            for (int j = 0; j < linea.size(); j++) {
+                if (j % 2 == 0) { // Nodos izquierdos
+                    conectores.append(" ".repeat(espacio));
+                    conectores.append("/");
+                    conectores.append(" ".repeat(espacio * 2+1)); // Espacio extra
+                } else { // Nodos derechos
+                    conectores.append(" ".repeat(espacio ));
+                    conectores.append("\\");
+                    conectores.append(" ".repeat(espacio * 2+1));
+                }
+
+            }
+            sb.append(conectores.toString().trim()).append("\n");
+            }
+            // Línea de valores de los nodos
+            StringBuilder valores = new StringBuilder();
+            valores.append(" ".repeat(espacio)); // Espacio inicial
+            for (String valor : linea) {
+                valores.append(valor.isEmpty() ? " " : valor);
+                valores.append(" ".repeat(2 * espacio + 1)); // Espacio entre nodos
+            }
+            sb.append(valores.toString().trim()).append("\n");
+        }
+
+        return sb.toString();
     }
 }
