@@ -6,10 +6,12 @@ package visual;
 
 import cu.edu.cujae.ceis.tree.Tree;
 import cu.edu.cujae.ceis.tree.TreeNode;
+import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ import logic.Huffman;
 import logic.NodeHuffman;
 import logic.Convert;
 import logic.FileManager;
+import logic.TreeHuffman;
 
 /**
  *
@@ -49,8 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
         tableModel.setColumnIdentifiers(columns);
         codeTable.setModel(tableModel);
         
-        //Initializes the controller class
-        huff = new Huffman();
+        
             
         //arbol en jtree
         /*jTreeRoot = new DefaultMutableTreeNode(huff.getTree().getRoot());
@@ -248,7 +250,10 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        FileManager.saveFile(huff);
+        if(tableModel.getRowCount()>0)
+            FileManager.saveFile(huff);
+        else
+            JOptionPane.showMessageDialog(null, "There is nothing to save");
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -267,10 +272,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         try {
             // TODO add your handling code here:
-            huff = FileManager.loadFile();
-            clearTable();
-            updateFrameL();
-            //treeRepresentation.setText(aux);
+            Huffman huff = FileManager.loadFile();
+            if(huff!=null){
+               clearTable();
+               updateFrameL(huff); 
+            }else{
+                JOptionPane.showMessageDialog(null, "Something gone wrong while loading the file");
+            }
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -323,6 +332,8 @@ public class MainWindow extends javax.swing.JFrame {
         //Saves the input string and calls the logic functions
         String inputText = stringInput.getText();
         if(!inputText.isEmpty()){
+            //Initializes the controller class
+            huff = new Huffman();
             huff.huffmanCode(inputText);
             
             //Update the table
@@ -337,13 +348,14 @@ public class MainWindow extends javax.swing.JFrame {
             
             //Displays the tree representation in the JFrame
             String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+            //String treeRepresentationS = generarArbolConectores((NodeHuffman)huff.getTree().getRoot());
             treeRepresentation.setText(treeRepresentationS);
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
     }
     
-    public void updateFrameL(){
+    public void updateFrameL(Huffman huff){
         //Update the table
         LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
         Iterator<NodeHuffman> i = listForTheTable.iterator();
@@ -351,12 +363,13 @@ public class MainWindow extends javax.swing.JFrame {
             NodeHuffman aux = i.next();
             tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
         }
-        
+        //Displays the phrase
+        stringInput.setText(huff.getPhrase());
         //Displays the encoded phrase
         encodedString.setText(huff.getCode());
             
         //Displays the tree representation in the JFrame
-        String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+        String treeRepresentationS = printTree( (NodeHuffman) huff.getTree().getRoot());
         treeRepresentation.setText(treeRepresentationS);
     }
     
@@ -366,5 +379,74 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = numberOfRows-1; i >= 0; i--) {
             tableModel.removeRow(i);
         }
+    }
+    
+    public static String generarArbolConectores(NodeHuffman root) {
+        ArrayList<ArrayList<String>> lineas = new ArrayList<>();
+        ArrayList<NodeHuffman> nivel = new ArrayList<>();
+        ArrayList<NodeHuffman> siguiente = new ArrayList<>();
+
+        nivel.add(root);
+        int nn = 1;
+        int ancho = 1;
+
+        while (nn != 0) {
+            ArrayList<String> linea = new ArrayList<>();
+            nn = 0;
+            for (NodeHuffman nodo : nivel) {
+                if (nodo == null) {
+                    linea.add("");
+                    siguiente.add(null);
+                    siguiente.add(null);
+                } else {
+                    String valor = String.valueOf(nodo.getFrequency())+"."+String.valueOf(nodo.getInf());
+                    linea.add(valor);
+                    siguiente.add((NodeHuffman)nodo.getLeft());
+                    siguiente.add((NodeHuffman)nodo.getRight());
+                    if ((NodeHuffman)nodo.getLeft() != null) nn++;
+                    if ((NodeHuffman)nodo.getRight() != null) nn++;
+                }
+            }
+        
+            lineas.add(linea);
+            ancho = Math.max(ancho, linea.size());
+            nivel = siguiente;
+            siguiente = new ArrayList<>();
+        }
+    
+        // Construcción de líneas con conectores
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lineas.size(); i++) {
+            ArrayList<String> linea = lineas.get(i);
+            int espacio = (int) Math.pow(2, (lineas.size() - i - 1)) - 1;
+            if (i > 0) {
+            StringBuilder conectores = new StringBuilder();
+            conectores.append(" ".repeat(espacio)); // Espacio inicial
+
+            for (int j = 0; j < linea.size(); j++) {
+                if (j % 2 == 0) { // Nodos izquierdos
+                    conectores.append(" ".repeat(espacio));
+                    conectores.append("/");
+                    conectores.append(" ".repeat(espacio * 2+1)); // Espacio extra
+                } else { // Nodos derechos
+                    conectores.append(" ".repeat(espacio ));
+                    conectores.append("\\");
+                    conectores.append(" ".repeat(espacio * 2+1));
+                }
+
+            }
+            sb.append(conectores.toString().trim()).append("\n");
+            }
+            // Línea de valores de los nodos
+            StringBuilder valores = new StringBuilder();
+            valores.append(" ".repeat(espacio)); // Espacio inicial
+            for (String valor : linea) {
+                valores.append(valor.isEmpty() ? " " : valor);
+                valores.append(" ".repeat(2 * espacio + 1)); // Espacio entre nodos
+            }
+            sb.append(valores.toString().trim()).append("\n");
+        }
+
+        return sb.toString();
     }
 }

@@ -15,7 +15,7 @@ public class NodeHuffman extends BinaryTreeNode<NodeHuffman> implements Serializ
     private char inf;
     private int frequency;
     private String code;
-    private static final long serialVersionUID = -1037498727893069131L;
+    private static final long serialVersionUID = 1L;
 
     public NodeHuffman(char inf, int frequency) {
         super();

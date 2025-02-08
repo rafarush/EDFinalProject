@@ -4,7 +4,6 @@
  */
 package logic;
 
-import cu.edu.cujae.ceis.tree.binary.BinaryTree;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,11 +47,11 @@ public class Huffman implements Serializable{
     }
 
     //sets
-    /*
-    public void setTree(BinaryTree<NodeHuffman> tree) {
-        this.treeHuffman = tree;
+    
+    public void setTree(TreeHuffman tree) {
+        this.treeHuffman.setRoot(tree.getRoot());
     }
-    */
+    
 
     public void setPhrase(String phrase) {
         this.phrase = phrase;

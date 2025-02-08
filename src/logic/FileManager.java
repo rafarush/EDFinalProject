@@ -3,13 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package logic;
-
-import logic.Convert;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -43,8 +40,17 @@ public class FileManager {
             try (RandomAccessFile file = new RandomAccessFile(fileToSave, "rw")) {
                 // Contenido binario a guardar en el archivo
                 
-                byte[] content = Convert.toBytes(huff); // Ejemplo de binario
-                //file.writeInt(content.length);
+                byte[] content = Convert.toBytes(huff.getPhrase()); // Phrase
+                file.writeInt(content.length);
+                file.write(content);
+                content = Convert.toBytes(huff.getCode()); // Code
+                file.writeInt(content.length);
+                file.write(content);
+                content = Convert.toBytes(huff.getTree()); // Tree
+                file.writeInt(content.length);
+                file.write(content);
+                content = Convert.toBytes(huff.getListNodeHuffman()); // TreeNode list
+                file.writeInt(content.length);
                 file.write(content);
                 file.close();
                 System.out.println("File saved successfully.");
@@ -57,6 +63,7 @@ public class FileManager {
     public static Huffman loadFile() throws ClassNotFoundException{
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Load file");
+        //Huffman huff = null;
         Huffman huff = null;
 
         // Filtrar para mostrar solo archivos con la extensión .dat (opcional)
@@ -68,21 +75,25 @@ public class FileManager {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToLoad = fileChooser.getSelectedFile();
             huff = new Huffman();
+            
             System.out.println("Load file: " + fileToLoad.getAbsolutePath());
 
             // Aquí puedes añadir el código para leer el archivo binario
             try (RandomAccessFile file = new RandomAccessFile(fileToLoad, "r")) {
                 // Leer el contenido binario del archivo
-                byte[] contenido = new byte [(int) file.length()];
-                file.readFully(contenido);
-                huff = (Huffman) Convert.toObject(contenido);
-                System.out.println("File content: "+huff.getPhrase()+"code: "+huff.getCode());
-                //System.out.println("File content: ");
-                /*for (byte b : contenido) {
-                    System.out.printf("%02x ", b);
-                }*/
-                //String test = (String) Convert.toObject(contenido);
-                //System.out.println(test);
+                byte[] phrase = new byte [(int) file.readInt()];
+                file.read(phrase);
+                huff.setPhrase((String)Convert.toObject(phrase));
+                byte[] code = new byte [(int) file.readInt()];
+                file.read(code);
+                huff.setCode((String)Convert.toObject(code));
+                byte[] tree = new byte [(int) file.readInt()];
+                file.read(tree);
+                TreeHuffman th = (TreeHuffman) Convert.toObject(tree);
+                huff.setTree(th);
+                byte[] nodeList = new byte [(int) file.readInt()];
+                file.read(nodeList);
+                huff.setListNodeHuffman((LinkedList<NodeHuffman>) Convert.toObject(nodeList));
                 file.close();
                 System.out.println("\nFile loaded successfully.");
             } catch (IOException e) {
@@ -92,4 +103,27 @@ public class FileManager {
         return huff;
     }
     
+    ///////////////////
+    /*
+    public void compress (TreeHuffman t) throws IOException{
+        RandomAccessFile random = new RandomAccessFile(ficheroHuffman, "rw");
+        byte [] byteHuffman = Convert.toBytes(t);
+        random.writeLong(byteHuffman.length);
+        random.write(byteHuffman);
+
+        random.close();
+			
+    }
+	
+    public TreeHuffman decompress () throws IOException, ClassNotFoundException {
+            RandomAccessFile random = new RandomAccessFile(ficheroHuffman, "rw");
+            byte [] byteHuffman = new byte[(int) random.readLong()];
+            random.read(byteHuffman);
+            TreeHuffman t = (TreeHuffman) Convert.toObject(byteHuffman);
+
+            random.close();
+
+            return t ;
+    }
+    */
 }

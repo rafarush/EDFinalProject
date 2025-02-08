@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 public class TreeHuffman extends BinaryTree<NodeHuffman> implements Serializable{
     //private NodeHuffman root;
-    private static final long serialVersionUID = -5918777617621318795L;
+    private static final long serialVersionUID = 1L;
     
     public TreeHuffman(NodeHuffman nodeRoot){
         //super();
