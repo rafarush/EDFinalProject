@@ -133,6 +133,7 @@ public class MainWindow extends javax.swing.JFrame {
         codeTable.setEnabled(false);
         scrollPaneFrequencies.setViewportView(codeTable);
 
+        treeRepresentation.setEditable(false);
         treeRepresentation.setColumns(20);
         treeRepresentation.setRows(5);
         scrollPaneTree.setViewportView(treeRepresentation);
@@ -268,7 +269,8 @@ public class MainWindow extends javax.swing.JFrame {
             // TODO add your handling code here:
             huff = FileManager.loadFile();
             clearTable();
-            updateFrame();
+            updateFrameL();
+            //treeRepresentation.setText(aux);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -330,6 +332,8 @@ public class MainWindow extends javax.swing.JFrame {
                 NodeHuffman aux = i.next();
                 tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
             }
+            //Displays the encoded phrase
+            encodedString.setText(huff.getCode());
             
             //Displays the tree representation in the JFrame
             String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
@@ -337,6 +341,23 @@ public class MainWindow extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "The text input is blank, please, write something");
         }
+    }
+    
+    public void updateFrameL(){
+        //Update the table
+        LinkedList<NodeHuffman> listForTheTable = huff.getListNodeHuffman();
+        Iterator<NodeHuffman> i = listForTheTable.iterator();
+        while(i.hasNext()){
+            NodeHuffman aux = i.next();
+            tableModel.addRow(new Object[]{aux.getInf(),aux.getFrequency(),aux.getCode()});
+        }
+        
+        //Displays the encoded phrase
+        encodedString.setText(huff.getCode());
+            
+        //Displays the tree representation in the JFrame
+        String treeRepresentationS = printTree((NodeHuffman)huff.getTree().getRoot());
+        treeRepresentation.setText(treeRepresentationS);
     }
     
     public void clearTable(){

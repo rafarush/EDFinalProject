@@ -46,6 +46,7 @@ public class FileManager {
                 byte[] content = Convert.toBytes(huff); // Ejemplo de binario
                 //file.writeInt(content.length);
                 file.write(content);
+                file.close();
                 System.out.println("File saved successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -70,17 +71,19 @@ public class FileManager {
             System.out.println("Load file: " + fileToLoad.getAbsolutePath());
 
             // Aquí puedes añadir el código para leer el archivo binario
-            try (RandomAccessFile file = new RandomAccessFile(fileToLoad, "rw")) {
+            try (RandomAccessFile file = new RandomAccessFile(fileToLoad, "r")) {
                 // Leer el contenido binario del archivo
-                byte[] contenido = {};
+                byte[] contenido = new byte [(int) file.length()];
                 file.readFully(contenido);
                 huff = (Huffman) Convert.toObject(contenido);
+                System.out.println("File content: "+huff.getPhrase()+"code: "+huff.getCode());
                 //System.out.println("File content: ");
                 /*for (byte b : contenido) {
                     System.out.printf("%02x ", b);
                 }*/
                 //String test = (String) Convert.toObject(contenido);
                 //System.out.println(test);
+                file.close();
                 System.out.println("\nFile loaded successfully.");
             } catch (IOException e) {
                 e.printStackTrace();

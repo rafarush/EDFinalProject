@@ -5,15 +5,17 @@
 package logic;
 
 import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
+import java.io.Serializable;
 
 /**
  *
  * @author Jorgito
  */
-public class NodeHuffman extends BinaryTreeNode<NodeHuffman>{
+public class NodeHuffman extends BinaryTreeNode<NodeHuffman> implements Serializable{
     private char inf;
     private int frequency;
     private String code;
+    private static final long serialVersionUID = -1037498727893069131L;
 
     public NodeHuffman(char inf, int frequency) {
         super();

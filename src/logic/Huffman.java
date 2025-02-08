@@ -95,7 +95,7 @@ public class Huffman implements Serializable{
         Iterator<Character> iterator=phrase.iterator();
         
         while (iterator.hasNext()) {
-            codeH=codeH+" "+charToCode(iterator.next());
+            codeH=codeH+charToCode(iterator.next());
         }
         return codeH;
     }

@@ -6,14 +6,15 @@ package logic;
 
 import cu.edu.cujae.ceis.tree.binary.BinaryTree;
 import cu.edu.cujae.ceis.tree.binary.BinaryTreeNode;
+import java.io.Serializable;
 
 /**
  *
  * @author Jorgito
  */
-public class TreeHuffman extends BinaryTree<NodeHuffman>{
+public class TreeHuffman extends BinaryTree<NodeHuffman> implements Serializable{
     //private NodeHuffman root;
-    
+    private static final long serialVersionUID = -5918777617621318795L;
     
     public TreeHuffman(NodeHuffman nodeRoot){
         //super();
